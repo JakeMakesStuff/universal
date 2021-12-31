@@ -85,16 +85,20 @@ export const makeUniversalApp = async (opts: MakeUniversalOpts): Promise<void> =
 
     const uniqueToX64: string[] = [];
     const uniqueToArm64: string[] = [];
-    const x64Files = await getAllAppFiles(await fs.realpath(tmpApp));
-    const arm64Files = await getAllAppFiles(await fs.realpath(opts.arm64AppPath));
+    let x64Files = await getAllAppFiles(await fs.realpath(tmpApp));
+    let arm64Files = await getAllAppFiles(await fs.realpath(opts.arm64AppPath));
 
     for (const file of dupedFiles(x64Files)) {
-      if (!arm64Files.some((f) => f.relativePath === file.relativePath))
+      if (!arm64Files.some((f) => f.relativePath === file.relativePath)) {
         uniqueToX64.push(file.relativePath);
+        x64Files = x64Files.splice(x64Files.indexOf(file), 1);
+      }
     }
     for (const file of dupedFiles(arm64Files)) {
-      if (!x64Files.some((f) => f.relativePath === file.relativePath))
+      if (!x64Files.some((f) => f.relativePath === file.relativePath)) {
         uniqueToArm64.push(file.relativePath);
+        arm64Files = arm64Files.splice(arm64Files.indexOf(file), 1);
+      }
     }
     if (uniqueToX64.length !== 0 || uniqueToArm64.length !== 0) {
       if (opts.copyUniqueMachO) {
