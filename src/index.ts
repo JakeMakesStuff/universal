@@ -91,13 +91,13 @@ export const makeUniversalApp = async (opts: MakeUniversalOpts): Promise<void> =
     for (const file of dupedFiles(x64Files)) {
       if (!arm64Files.some((f) => f.relativePath === file.relativePath)) {
         uniqueToX64.push(file.relativePath);
-        x64Files = x64Files.splice(x64Files.indexOf(file), 1);
+        x64Files.splice(x64Files.indexOf(file), 1);
       }
     }
     for (const file of dupedFiles(arm64Files)) {
       if (!x64Files.some((f) => f.relativePath === file.relativePath)) {
         uniqueToArm64.push(file.relativePath);
-        arm64Files = arm64Files.splice(arm64Files.indexOf(file), 1);
+        arm64Files.splice(arm64Files.indexOf(file), 1);
       }
     }
     if (uniqueToX64.length !== 0 || uniqueToArm64.length !== 0) {
