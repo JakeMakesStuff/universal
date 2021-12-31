@@ -104,13 +104,13 @@ export const makeUniversalApp = async (opts: MakeUniversalOpts): Promise<void> =
       if (opts.copyUniqueMachO) {
         const x64UniquePromises = Promise.all(
           uniqueToX64.map(async (x) => {
-            await fs.mkdirp(path.dirname(x));
+            await fs.mkdirp(path.resolve(tmpApp, path.dirname(x)));
             await fs.copy(path.resolve(opts.x64AppPath, x), path.resolve(tmpApp, x));
           }),
         );
         const arm64UniquePromises = Promise.all(
           uniqueToArm64.map(async (x) => {
-            await fs.mkdirp(path.dirname(x));
+            await fs.mkdirp(path.resolve(tmpApp, path.dirname(x)));
             await fs.copy(path.resolve(opts.arm64AppPath, x), path.resolve(tmpApp, x));
           }),
         );
